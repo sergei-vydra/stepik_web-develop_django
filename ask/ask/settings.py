@@ -25,7 +25,7 @@ SECRET_KEY = 'ldixr*#e&w)w3(l2e078c9l^53%u)a83$*+009pr)jd7x=qi!x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

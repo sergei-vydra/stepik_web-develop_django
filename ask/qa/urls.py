@@ -1,11 +1,11 @@
-from django.urls import path
+from django.urls import path, re_path
 from .views import test
 
 urlpatterns = [
     path(r'', test),
     path(r'login/', test),
     path(r'signup/', test),
-    path(r'question/<int:id>/', test),
+    re_path(r'^question/(\d+)/$', test),
     path(r'ask/', test),
     path(r'popular/', test),
     path(r'new/', test),

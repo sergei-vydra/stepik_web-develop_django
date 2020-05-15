@@ -25,7 +25,6 @@ def test(request, *args, **kwargs):
     return HttpResponse('OK')
 
 
-@require_GET
 def show_page(request):
     try:
         page_num = int(request.GET.get('page'))
@@ -43,7 +42,6 @@ def show_page(request):
                   {'title': page_num, 'paginator': paginator, 'questions': page.object_list, 'page': page})
 
 
-@require_GET
 def show_popular(request):
     try:
         page_num = int(request.GET.get('page'))

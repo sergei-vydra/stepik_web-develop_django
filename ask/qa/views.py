@@ -60,4 +60,4 @@ def show_popular(request):
 
 def show_question(request, question_id):
     question = get_object_or_404(Question, id=question_id)
-    return render(request, 'qa/question.html', {'title': question.title, 'text': question.text})
+    return render(request, 'qa/question.html', {'title': question.title, 'text': question.text, 'question': question})

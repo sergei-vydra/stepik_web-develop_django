@@ -2,4 +2,10 @@
 
 {% block title%}{{ title }}{% endblock %}
 
-{% block body%}{{ text }}{% endblock %}
+{% block body%}{{ text }}
+{% for answer in question.answer_set.all %}
+
+        <li>{{ answer }}, {{ answer.author_id }}</li>
+
+    {% endfor %}
+{% endblock %}

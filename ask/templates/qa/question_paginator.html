@@ -1,0 +1,35 @@
+{% extends "qa/base.html" %}
+
+{% block title %} {{ title }} Question Paginator {% endblock %}
+
+{% block body %}
+    <div>
+        {% for question in questions %}
+            <ul>
+                <li>{{ question.title }}</li>
+                <li>{{ question.text }}</li>
+                <li>{{ question.rating }}</li>
+                <a href="/question/{{ question.id }}">link to question</a>
+            </ul>
+            <br/>
+        {% endfor %}
+
+    </div>
+    <br/>
+
+
+    <nav>
+        <ul class="pagination">
+            {% for p in paginator.page_range %}
+                 {% if p == page.number %}
+                 
+                    <li class="active">
+                     {% else %}
+                    <li>
+                 {% endif %}
+              <a href="{{ paginator.base_url }}{{ p }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endblock %}

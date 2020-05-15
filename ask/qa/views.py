@@ -29,9 +29,9 @@ def show_page(request):
     try:
         page_num = int(request.GET.get('page'))
     except ValueError:
-        raise Http404()
+        page_num = 1
     except TypeError:
-        raise Http404()
+        page_num = 1
     limit = 10
     question = Question.objects.new()
     paginator = Paginator(question, limit)

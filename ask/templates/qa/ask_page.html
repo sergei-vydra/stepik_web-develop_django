@@ -1,0 +1,27 @@
+{% extends "qa/base.html" %}
+
+
+{% block title %} Ask Form {% endblock %}
+
+{% block body %}
+
+    <form method="post" action="/ask/">
+
+        <fieldset>
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+        </fieldset>
+
+        <button type="submit">Save</button>
+
+    </form>
+
+    <div>
+        <a href="/">Return to main page</a>
+    </div>
+
+{% endblock %}
+

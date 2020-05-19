@@ -1,8 +1,9 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.views.decorators.http import require_GET
+from .forms import AskForm, AnswerForm
 
 from .models import Answer, Question
 
@@ -61,3 +62,30 @@ def show_popular(request):
 def show_question(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     return render(request, 'qa/question.html', {'title': question.title, 'text': question.text, 'question': question})
+
+
+def ask_form(request):
+    if request.method == 'POST':
+        form = AskForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            url = question.get_url()
+            return HttpResponseRedirect(url)
+
+    form = AskForm()
+    return render(request, 'qa/ask_page.html', {'form': form})
+
+
+def answer_form(request, question_id):
+    try:
+        question = Question.objects.get(id=question_id)
+    except Question.DoesNotExist:
+        raise Http404
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            url = question.get_url()
+            return HttpResponseRedirect(url)
+    form = AnswerForm(initial={'question': question.id})
+    return render(request, 'qa/answer_form.html', {'question': question, 'form': form})

@@ -68,12 +68,15 @@ def ask_form(request):
     if request.method == 'POST':
         form = AskForm(request.POST)
         if form.is_valid():
+            form._user = request.user
             question = form.save()
             url = question.get_url()
             return HttpResponseRedirect(url)
 
     form = AskForm()
-    return render(request, 'qa/ask_page.html', {'form': form})
+    return render(request, 'qa/ask_page.html', {'form': form,
+                                                'user': request.user,
+                                                'session': request.session, })
 
 
 def answer_form(request, question_id):
@@ -84,11 +87,13 @@ def answer_form(request, question_id):
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():
-            form.save()
+            form._user = request.user
+            _ = form.save()
             url = question.get_url()
             return HttpResponseRedirect(url)
     form = AnswerForm(initial={'question': question.id})
-    return render(request, 'qa/answer_form.html', {'question': question, 'form': form})
+    return render(request, 'qa/answer_form.html',
+                  {'question': question, 'form': form, 'user': request.user, 'session': request.session})
 
 
 def signup_form(request):

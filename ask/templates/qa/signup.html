@@ -1,0 +1,17 @@
+{% extends "qa/base.html"%}
+
+{% block title%} Sing Up {% endblock %}
+
+{% block body%}
+    <form method="post" action="/singup/">
+        <fieldset>
+            {% csrf_token %}
+            {{ form.as_p }}
+        </fieldset>
+        <button type="submit" name="SingUp">SingUp</button>
+    </form>
+
+    <div>
+        <a href="/">Return to main page</a>
+    </div>
+{% endblock %}

@@ -1,10 +1,10 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.views.decorators.http import require_GET
-from .forms import AskForm, AnswerForm
-
+from .forms import AskForm, AnswerForm, SignupForm, LoginForm
 from .models import Answer, Question
 
 
@@ -89,3 +89,38 @@ def answer_form(request, question_id):
             return HttpResponseRedirect(url)
     form = AnswerForm(initial={'question': question.id})
     return render(request, 'qa/answer_form.html', {'question': question, 'form': form})
+
+
+def signup_form(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data["username"]
+            password = form.raw_password
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+            return HttpResponseRedirect('/')
+
+    form = SignupForm()
+    return render(request, 'qa/signup.html', {'form': form})
+
+
+def login_form(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+            return HttpResponseRedirect('/')
+    else:
+        form = LoginForm()
+    return render(request, 'qa/login.html', {'form': form,
+                                             'user': request.user,
+                                             'session': request.session, })
